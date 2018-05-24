@@ -436,6 +436,7 @@ internal class _internal_SKScrollView: UIScrollView {
         eventProxy?.touchesCancelled(touches, with: event)
     }
     
+    @available(iOS 9.1, *)
     open override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
         super.touchesEstimatedPropertiesUpdated(touches)
         eventProxy?.touchesEstimatedPropertiesUpdated(touches)
