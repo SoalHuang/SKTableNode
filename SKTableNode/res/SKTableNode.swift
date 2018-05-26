@@ -6,6 +6,7 @@
 //  Copyright © 2018年 SoalHuang. All rights reserved.
 //
 
+import UIKit
 import SpriteKit
 
 public typealias SKTableNodeScrollPosition = UITableViewScrollPosition
@@ -23,6 +24,7 @@ open class SKTableNode: SKScrollNode {
     
     open weak var tableDelegate: SKTableNodeDelegate? {
         didSet {
+            super.scrollDelegate = tableDelegate
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(performReloadData), object: nil)
             self.perform(#selector(performReloadData), with: nil, afterDelay: 0.02)
         }

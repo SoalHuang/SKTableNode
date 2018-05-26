@@ -6,6 +6,7 @@
 //  Copyright © 2018 SoalHuang. All rights reserved.
 //
 
+import UIKit
 import SpriteKit
 
 open class SKTableNodeCell: SKSpriteNode {

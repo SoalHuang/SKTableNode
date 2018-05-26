@@ -6,6 +6,7 @@
 //  Copyright © 2018年 SoalHuang. All rights reserved.
 //
 
+import UIKit
 import SpriteKit
 
 /* @ Also see Class UIScrollView
