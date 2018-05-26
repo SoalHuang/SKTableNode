@@ -25,6 +25,7 @@
 		56EE881320B72839004053AF /* SKExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE87EF20B72738004053AF /* SKExtensions.swift */; };
 		56EE881420B72839004053AF /* SKScrollNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE87F020B72738004053AF /* SKScrollNode.swift */; };
 		56EE881520B72839004053AF /* SKTableCellNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE87F120B72738004053AF /* SKTableCellNode.swift */; };
+		56EE883820B93845004053AF /* SampleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE883720B93845004053AF /* SampleCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		56EE880920B727EB004053AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56EE880C20B727EB004053AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56EE880E20B727EB004053AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56EE883720B93845004053AF /* SampleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,10 +129,10 @@
 		56EE87ED20B72738004053AF /* res */ = {
 			isa = PBXGroup;
 			children = (
-				56EE87EE20B72738004053AF /* SKTableNode.swift */,
-				56EE87EF20B72738004053AF /* SKExtensions.swift */,
 				56EE87F020B72738004053AF /* SKScrollNode.swift */,
+				56EE87EE20B72738004053AF /* SKTableNode.swift */,
 				56EE87F120B72738004053AF /* SKTableCellNode.swift */,
+				56EE87EF20B72738004053AF /* SKExtensions.swift */,
 			);
 			path = res;
 			sourceTree = "<group>";
@@ -142,6 +144,7 @@
 				56EE880420B727E8004053AF /* GameViewController.swift */,
 				56EE880220B727E8004053AF /* GameScene.swift */,
 				56EE87FE20B727E8004053AF /* GameScene.sks */,
+				56EE883720B93845004053AF /* SampleCell.swift */,
 				56EE880620B727E8004053AF /* Main.storyboard */,
 				56EE880920B727EB004053AF /* Assets.xcassets */,
 				56EE880B20B727EB004053AF /* LaunchScreen.storyboard */,
@@ -315,6 +318,7 @@
 				56EE880320B727E8004053AF /* GameScene.swift in Sources */,
 				56EE881520B72839004053AF /* SKTableCellNode.swift in Sources */,
 				56EE881320B72839004053AF /* SKExtensions.swift in Sources */,
+				56EE883820B93845004053AF /* SampleCell.swift in Sources */,
 				56EE880520B727E8004053AF /* GameViewController.swift in Sources */,
 				56EE87FD20B727E7004053AF /* AppDelegate.swift in Sources */,
 			);
@@ -559,12 +563,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Sample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.soso.Sample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -576,12 +581,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Sample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.soso.Sample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soso;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

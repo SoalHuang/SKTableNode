@@ -8,6 +8,8 @@
 
 import SpriteKit
 
+public typealias SKTableNodeScrollPosition = UITableViewScrollPosition
+
 /* @ Also see Class UITableView
  */
 open class SKTableNode: SKScrollNode {
@@ -124,7 +126,7 @@ open class SKTableNode: SKScrollNode {
         return vscs.sorted(by: { $0.index < $1.index })
     }
     
-    open func scrollToRow(at index: Int, at scrollPosition: UITableViewScrollPosition, animated: Bool) {
+    open func scrollToRow(at index: Int, at scrollPosition: SKTableNodeScrollPosition, animated: Bool) {
         guard let cb = allCellRangeMap._internal_optional(at: index) else { return }
         var offsetY: CGFloat = cb.middle
         switch scrollPosition {
@@ -141,12 +143,18 @@ open class SKTableNode: SKScrollNode {
         return ixs.sorted()
     }
     
-    open func selectRow(at index: Int, animated: Bool, scrollPosition: UITableViewScrollPosition) {
-        
+    open func selectRow(at index: Int, animated: Bool, scrollPosition: SKTableNodeScrollPosition) {
+        guard let cell = allCellRangeMap._internal_optional(at: index)?.cell else {
+            return
+        }
+        cell.setSelected(true, animated: animated)
+        scrollToRow(at: index, at: scrollPosition, animated: animated)
+        tableDelegate?.tableNode?(self, didSelectRowAt: index)
     }
     
     open func deselectRow(at index: Int, animated: Bool) {
-        
+        allCellRangeMap._internal_optional(at: index)?.cell?.setSelected(false, animated: animated)
+        tableDelegate?.tableNode?(self, didDeselectRowAt: index)
     }
     
     private var _p_visible_cells_: [String:[SKTableNodeCell]] = [:]
@@ -191,6 +199,42 @@ open class SKTableNode: SKScrollNode {
         super._proxyScrollViewDidScroll(scrollView)
         update(render: scrollView._internal_visiableRect)
     }
+    
+    private weak var activityCell: SKTableNodeCell?
+    // MARK: Touches
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        guard let point = touches.first?.location(in: contentNode) else {
+            return
+        }
+        let y = size.height / 2 - point.y
+        activityCell = allCellRangeMap.filter { $0.cell != nil && y > $0.lower && y < $0.upper }.first?.cell
+        activityCell?.setHighlighted(true, animated: true)
+    }
+    
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        guard let actCell = activityCell else { return }
+        actCell.setHighlighted(false, animated: true)
+        activityCell = nil
+    }
+    
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        guard let actCell = activityCell else { return }
+        allCellRangeMap.forEach {
+            if let cell = $0.cell, cell != actCell {
+                cell.setSelected(false, animated: true)
+                cell.setHighlighted(false, animated: true)
+            }
+        }
+        actCell.setSelected(true, animated: true)
+    }
+    
+    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        activityCell?.setHighlighted(false, animated: true)
+    }
 }
 
 @objc public protocol SKTableNodeDataSource {
@@ -222,13 +266,9 @@ fileprivate class SKTableCellBounds {
     
     weak var cell: SKTableNodeCell?
     
-    var middle: CGFloat {
-        return (lower + upper) / 2
-    }
+    var middle: CGFloat { return (lower + upper) / 2 }
     
-    var height: CGFloat {
-        return upper - lower
-    }
+    var height: CGFloat { return upper - lower }
     
     convenience init(index: Int, lower: CGFloat = 0.0, upper: CGFloat = 0.0) {
         self.init()
@@ -239,6 +279,10 @@ fileprivate class SKTableCellBounds {
     
     func isInside(bound: CGFloat) -> Bool {
         return bound > lower && bound < upper
+    }
+    
+    func contains(point: CGPoint) -> Bool {
+        return point.y > lower && point.y < upper
     }
     
     func contains(rect: CGRect) -> Bool {

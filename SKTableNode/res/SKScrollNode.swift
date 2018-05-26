@@ -232,27 +232,6 @@ open class SKScrollNode: SKNode {
     internal func _proxyScrollViewDidScroll(_ scrollView: UIScrollView) {
         contentNode.position = CGPoint(x: -scrollView.contentOffset.x, y: scrollView.contentOffset.y)
     }
-    
-    // MARK: Touches
-    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        print("touches began")
-    }
-    
-    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesMoved(touches, with: event)
-        print("touches moved")
-    }
-    
-    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        print("touches ended")
-    }
-    
-    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesCancelled(touches, with: event)
-        print("touches cancelled")
-    }
 }
 
 // MARK: _Private_ScrollNode_ScrollView_Delegate

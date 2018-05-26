@@ -10,16 +10,25 @@ import SpriteKit
 
 class GameScene: SKScene {
     
+    var tableNode: SKTableNode?
+    
     override func didMove(to view: SKView) {
-        let tableNode = SKTableNode(size: CGSize(width: 300, height: 300), target: view)
-        tableNode.backgroundNode.color = UIColor.blue
         
-        tableNode.tableDataSource = self
-        tableNode.tableDelegate = self
+        let table = SKTableNode(size: size, target: view)
+        table.backgroundNode.color = .blue
         
-        tableNode.register(SKTableNodeTitleCell.self, forCellWithReuseIdentifier: "cell")
+        table.tableDataSource = self
+        table.tableDelegate = self
         
-        addChild(tableNode)
+        table.register(SampleCell.self, forCellWithReuseIdentifier: "cell")
+        
+        addChild(table)
+        
+        tableNode = table
+    }
+    
+    override func didChangeSize(_ oldSize: CGSize) {
+        tableNode?.size = size
     }
 }
 
@@ -30,8 +39,7 @@ extension GameScene: SKTableNodeDataSource {
     }
     
     func tableNode(_ tableNode: SKTableNode, cellForRowAt index: Int) -> SKTableNodeCell {
-        let cell = tableNode.dequeueReusableCell(withReuseIdentifier: "cell") as! SKTableNodeTitleCell
-        cell.color = index % 2 == 0 ? UIColor.red : UIColor.blue
+        let cell = tableNode.dequeueReusableCell(withReuseIdentifier: "cell") as! SampleCell
         cell.labelNode.text = "\(index)"
         return cell
     }

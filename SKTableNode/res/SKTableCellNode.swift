@@ -14,9 +14,9 @@ open class SKTableNodeCell: SKSpriteNode {
     
     open internal(set) var index: Int = 0
     
-    open var isSelected: Bool = false
+    open private(set) var isSelected: Bool = false
     
-    open var isHighlighted: Bool = false
+    open private(set) var isHighlighted: Bool = false
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -30,8 +30,8 @@ open class SKTableNodeCell: SKSpriteNode {
     
     open func prepareForReuse() {
         index = 0
-        isSelected = false
-        isHighlighted = false
+        setHighlighted(false, animated: false)
+        setSelected(false, animated: false)
     }
     
     private let contentNode_ = SKNode()
@@ -43,6 +43,16 @@ open class SKTableNodeCell: SKSpriteNode {
             addChild(contentNode_)
         }
         return contentNode_
+    }
+    
+    open func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        isHighlighted = true
+        run(SKAction.run { self.color = highlighted ? UIColor.lightGray : UIColor.white })
+    }
+    
+    open func setSelected(_ selected: Bool, animated: Bool) {
+        isSelected = true
+        run(SKAction.run { self.color = selected ? UIColor.lightGray : UIColor.white })
     }
 }
 
@@ -64,6 +74,8 @@ open class SKTableNodeTitleCell: SKTableNodeCell {
     
     public lazy var labelNode: SKLabelNode = {
         let label = SKLabelNode()
+        label.fontSize = 22
+        label.fontColor = .red
         return label
     }()
 }
