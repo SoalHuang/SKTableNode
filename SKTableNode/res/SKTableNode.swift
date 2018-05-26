@@ -210,14 +210,21 @@ open class SKTableNode: SKScrollNode {
             return
         }
         let y = size.height / 2 - point.y
-        activityCell = allCellRangeMap.filter { $0.cell != nil && y > $0.lower && y < $0.upper }.first?.cell
-        activityCell?.setHighlighted(true, animated: true)
+        let cells = allCellRangeMap.filter { $0.cell != nil && y > $0.lower && y < $0.upper }
+        guard let cell = cells.first?.cell else {
+            return
+        }
+        activityCell = cell
+        if tableDelegate?.tableNode?(self, shouldHighlightRowAt: cell.index) ?? false {
+            cell.setHighlighted(true, animated: true)
+            tableDelegate?.tableNode?(self, didHighlightRowAt: cell.index)
+        }
     }
     
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
-        guard let actCell = activityCell else { return }
-        actCell.setHighlighted(false, animated: true)
+        guard let cell = activityCell else { return }
+        cell.setHighlighted(false, animated: true)
         activityCell = nil
     }
     
@@ -231,6 +238,7 @@ open class SKTableNode: SKScrollNode {
             }
         }
         actCell.setSelected(true, animated: true)
+        tableDelegate?.tableNode?(self, didSelectRowAt: actCell.index)
     }
     
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

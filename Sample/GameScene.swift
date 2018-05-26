@@ -49,4 +49,7 @@ extension GameScene: SKTableNodeDelegate {
     func tableNode(_ tableNode: SKTableNode, heightForRowAt index: Int) -> CGFloat {
         return 60
     }
+    func tableNode(_ tableNode: SKTableNode, didSelectRowAt index: Int) {
+        print("did select row at: \(index)")
+    }
 }
