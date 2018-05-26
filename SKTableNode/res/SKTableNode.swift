@@ -38,18 +38,13 @@ open class SKTableNode: SKScrollNode {
     
     public override init(size: CGSize, target: SKView, scene: SKScene) {
         super.init(size: size, target: target, scene: scene)
-        isPagingEnabled = false
-        isScrollEnabled = true
-        isDirectionalLockEnabled = true
-        alwaysBounceVertical = true
-        alwaysBounceHorizontal = false
-        showsVerticalScrollIndicator = true
+        scrollView.isPagingEnabled = false
+        scrollView.isScrollEnabled = true
+        scrollView.isDirectionalLockEnabled = true
+        scrollView.alwaysBounceVertical = true
+        scrollView.alwaysBounceHorizontal = false
+        scrollView.showsVerticalScrollIndicator = true
         scrollView_.showsHorizontalScrollIndicator = false
-    }
-    
-    open override var showsHorizontalScrollIndicator: Bool {
-        get { return scrollView_.showsHorizontalScrollIndicator }
-        set { /* do nothing */ }
     }
     
     open var rowHeight: CGFloat = 44
@@ -67,7 +62,7 @@ open class SKTableNode: SKScrollNode {
             allCellRangeMap.append(SKTableCellBounds(index: index, lower: posY, upper: posY + ch))
             posY += ch
         }
-        contentSize = CGSize(width: size.width, height: posY)
+        scrollView.contentSize = CGSize(width: size.width, height: posY)
         update(render: scrollView_._internal_visiableRect)
     }
     
