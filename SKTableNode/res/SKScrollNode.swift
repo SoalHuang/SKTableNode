@@ -22,7 +22,7 @@ open class SKScrollNode: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public init(size: CGSize, target: SKView) {
+    public init(size: CGSize, target: SKView, scene: SKScene) {
         self.size = size
         target_ = target
         super.init()
@@ -34,7 +34,19 @@ open class SKScrollNode: SKNode {
         cropNode.maskNode = backgroundNode
         cropNode.addChild(contentNode)
         addChild(cropNode)
-        
+    }
+    
+    open func didMove(to view: SKView) {
+        if let target = target_, scrollView_.superview == nil {
+            target.addSubview(scrollView_)
+            scrollView_.center = target._internal_convert(.zero, from: self)
+        }
+    }
+    
+    open func willMove(from view: SKView) {
+        if let _ = self.scrollView.superview {
+            self.scrollView.removeFromSuperview()
+        }
     }
     
     private let scrollViewDelegateProxy = _Scroll_Delegate_Proxy_()
@@ -54,13 +66,18 @@ open class SKScrollNode: SKNode {
     }()
     
     open override func removeFromParent() {
-        scrollView_.removeFromSuperview()
+        if let _ = scrollView.superview {
+            scrollView_.removeFromSuperview()
+        }
         super.removeFromParent()
     }
     
     open override func move(toParent parent: SKNode) {
         super.move(toParent: parent)
-        target_?.addSubview(scrollView_)
+        if let target = target_, scrollView_.superview == nil {
+            target.addSubview(scrollView_)
+            scrollView_.center = target._internal_convert(.zero, from: self)
+        }
     }
     
     open var scrollView: UIScrollView {
@@ -76,15 +93,20 @@ open class SKScrollNode: SKNode {
     
     open override var position: CGPoint {
         didSet {
-            guard let target = target_ else { return }
-            scrollView_.center = target._internal_convert(.zero, from: self)
+            if let target = target_ {
+                scrollView_.center = target._internal_convert(.zero, from: self)
+            }
         }
     }
     
     open var size: CGSize {
         didSet {
             backgroundNode.size = size
-            scrollView_.frame = scrollView_.bounds._internal_reset(size: size)
+            cropNode.maskNode = backgroundNode
+            scrollView_.frame = scrollView_.frame._internal_reset(size: size)
+            if let target = target_ {
+                scrollView_.center = target._internal_convert(.zero, from: self)
+            }
         }
     }
     

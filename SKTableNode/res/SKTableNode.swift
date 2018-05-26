@@ -36,8 +36,8 @@ open class SKTableNode: SKScrollNode {
         super.init(coder: aDecoder)
     }
     
-    public override init(size: CGSize, target: SKView) {
-        super.init(size: size, target: target)
+    public override init(size: CGSize, target: SKView, scene: SKScene) {
+        super.init(size: size, target: target, scene: scene)
         isPagingEnabled = false
         isScrollEnabled = true
         isDirectionalLockEnabled = true
@@ -215,7 +215,7 @@ open class SKTableNode: SKScrollNode {
             return
         }
         activityCell = cell
-        if tableDelegate?.tableNode?(self, shouldHighlightRowAt: cell.index) ?? false {
+        if tableDelegate?.tableNode?(self, shouldHighlightRowAt: cell.index) ?? true {
             cell.setHighlighted(true, animated: true)
             tableDelegate?.tableNode?(self, didHighlightRowAt: cell.index)
         }

@@ -12,19 +12,37 @@ class GameScene: SKScene {
     
     var tableNode: SKTableNode?
     
+    deinit {
+        print("GameScene deinit")
+    }
+    
     override func didMove(to view: SKView) {
+        setupTableNode(view: view)
+        tableNode?.didMove(to: view)
+    }
+    
+    override func willMove(from view: SKView) {
+        tableNode?.willMove(from: view)
+    }
+    
+    private func setupTableNode(view: SKView) {
+        if tableNode?.parent != nil {
+            return
+        }
+        if let table = tableNode {
+            addChild(table)
+            return
+        }
+        tableNode = SKTableNode(size: size, target: view, scene: self)
         
-        let table = SKTableNode(size: size, target: view)
-        table.backgroundNode.color = .blue
+        tableNode!.backgroundNode.color = .blue
         
-        table.tableDataSource = self
-        table.tableDelegate = self
+        tableNode!.tableDataSource = self
+        tableNode!.tableDelegate = self
         
-        table.register(SampleCell.self, forCellWithReuseIdentifier: "cell")
+        tableNode!.register(SampleCell.self, forCellWithReuseIdentifier: "cell")
         
-        addChild(table)
-        
-        tableNode = table
+        addChild(tableNode!)
     }
     
     override func didChangeSize(_ oldSize: CGSize) {
@@ -46,10 +64,17 @@ extension GameScene: SKTableNodeDataSource {
 }
 
 extension GameScene: SKTableNodeDelegate {
+    
     func tableNode(_ tableNode: SKTableNode, heightForRowAt index: Int) -> CGFloat {
         return 60
     }
+    
     func tableNode(_ tableNode: SKTableNode, didSelectRowAt index: Int) {
-        print("did select row at: \(index)")
+        tableNode.deselectRow(at: index, animated: true)
+        
+        let detailScene = DetailScene(size: size)
+        detailScene.index = index
+        detailScene.lastScene = self
+        view?.presentScene(detailScene)
     }
 }

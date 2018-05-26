@@ -17,5 +17,8 @@ class SampleCell: SKTableNodeTitleCell {
     required init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         labelNode.color = UIColor.red
+        if #available(iOS 11.0, *) {
+            labelNode.numberOfLines = 0
+        }
     }
 }
