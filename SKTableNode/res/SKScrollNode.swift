@@ -26,9 +26,9 @@ open class SKScrollNode: SKNode {
         self.size = size
         target_ = target
         super.init()
-        target.addSubview(scrollView)
-        scrollView.center = target._internal_convert(.zero, from: self)
-        scrollView.eventProxy = self
+        target.addSubview(scrollView_)
+        scrollView_.center = target._internal_convert(.zero, from: self)
+        scrollView_.eventProxy = self
         scrollViewDelegateProxy.delegate = self
         
         cropNode.maskNode = backgroundNode
@@ -54,16 +54,20 @@ open class SKScrollNode: SKNode {
     }()
     
     open override func removeFromParent() {
-        scrollView.removeFromSuperview()
+        scrollView_.removeFromSuperview()
         super.removeFromParent()
     }
     
     open override func move(toParent parent: SKNode) {
         super.move(toParent: parent)
-        target_?.addSubview(scrollView)
+        target_?.addSubview(scrollView_)
     }
     
-    internal lazy var scrollView: _internal_SKScrollView = {
+    open var scrollView: UIScrollView {
+        return scrollView_
+    }
+    
+    internal lazy var scrollView_: _internal_SKScrollView = {
         let scv = _internal_SKScrollView(frame: CGRect(origin: .zero, size: size))
         scv.contentSize = size
         scv.delegate = scrollViewDelegateProxy
@@ -73,161 +77,161 @@ open class SKScrollNode: SKNode {
     open override var position: CGPoint {
         didSet {
             guard let target = target_ else { return }
-            scrollView.center = target._internal_convert(.zero, from: self)
+            scrollView_.center = target._internal_convert(.zero, from: self)
         }
     }
     
     open var size: CGSize {
         didSet {
             backgroundNode.size = size
-            scrollView.frame = scrollView.bounds._internal_reset(size: size)
+            scrollView_.frame = scrollView_.bounds._internal_reset(size: size)
         }
     }
     
     open var contentOffset: CGPoint {
-        get { return scrollView.contentOffset }
-        set { scrollView.contentOffset = newValue }
+        get { return scrollView_.contentOffset }
+        set { scrollView_.contentOffset = newValue }
     }
     
     open var contentSize: CGSize {
-        get { return scrollView.contentSize }
-        set { scrollView.contentSize = newValue }
+        get { return scrollView_.contentSize }
+        set { scrollView_.contentSize = newValue }
     }
     
     open var contentInset: SKEdgeInsets {
-        get { return scrollView.contentInset }
-        set { scrollView.contentInset = newValue }
+        get { return scrollView_.contentInset }
+        set { scrollView_.contentInset = newValue }
     }
     
     @available(iOS 11.0, *)
     open var adjustedContentInset: SKEdgeInsets {
-        return scrollView.adjustedContentInset
+        return scrollView_.adjustedContentInset
     }
     
     @available(iOS 11.0, *)
     open func adjustedContentInsetDidChange() {
-        scrollView.adjustedContentInsetDidChange()
+        scrollView_.adjustedContentInsetDidChange()
     }
     
     @available(iOS 11.0, *)
     open var contentInsetAdjustmentBehavior: SKScrollNodeContentInsetAdjustmentBehavior {
-        get { return scrollView.contentInsetAdjustmentBehavior }
-        set { scrollView.contentInsetAdjustmentBehavior = newValue }
+        get { return scrollView_.contentInsetAdjustmentBehavior }
+        set { scrollView_.contentInsetAdjustmentBehavior = newValue }
     }
     
     open var isDirectionalLockEnabled: Bool {
-        get { return scrollView.isDirectionalLockEnabled }
-        set { scrollView.isDirectionalLockEnabled = newValue }
+        get { return scrollView_.isDirectionalLockEnabled }
+        set { scrollView_.isDirectionalLockEnabled = newValue }
     }
     
     open var bounces: Bool {
-        get { return scrollView.bounces }
-        set { scrollView.bounces = newValue }
+        get { return scrollView_.bounces }
+        set { scrollView_.bounces = newValue }
     }
     
     open var alwaysBounceVertical: Bool {
-        get { return scrollView.alwaysBounceVertical }
-        set { scrollView.alwaysBounceVertical = newValue }
+        get { return scrollView_.alwaysBounceVertical }
+        set { scrollView_.alwaysBounceVertical = newValue }
     }
     
     open var alwaysBounceHorizontal: Bool {
-        get { return scrollView.alwaysBounceHorizontal }
-        set { scrollView.alwaysBounceHorizontal = newValue }
+        get { return scrollView_.alwaysBounceHorizontal }
+        set { scrollView_.alwaysBounceHorizontal = newValue }
     }
     
     open var isPagingEnabled: Bool {
-        get { return scrollView.isPagingEnabled }
-        set { scrollView.isPagingEnabled = newValue }
+        get { return scrollView_.isPagingEnabled }
+        set { scrollView_.isPagingEnabled = newValue }
     }
     
     open var isScrollEnabled: Bool {
-        get { return scrollView.isScrollEnabled }
-        set { scrollView.isScrollEnabled = newValue }
+        get { return scrollView_.isScrollEnabled }
+        set { scrollView_.isScrollEnabled = newValue }
     }
     
     open var showsHorizontalScrollIndicator: Bool {
-        get { return scrollView.showsHorizontalScrollIndicator }
-        set { scrollView.showsHorizontalScrollIndicator = newValue }
+        get { return scrollView_.showsHorizontalScrollIndicator }
+        set { scrollView_.showsHorizontalScrollIndicator = newValue }
     }
     
     open var showsVerticalScrollIndicator: Bool {
-        get { return scrollView.showsVerticalScrollIndicator }
-        set { scrollView.showsVerticalScrollIndicator = newValue }
+        get { return scrollView_.showsVerticalScrollIndicator }
+        set { scrollView_.showsVerticalScrollIndicator = newValue }
     }
     
     open var scrollIndicatorInsets: SKEdgeInsets {
-        get { return scrollView.scrollIndicatorInsets }
-        set { scrollView.scrollIndicatorInsets = newValue }
+        get { return scrollView_.scrollIndicatorInsets }
+        set { scrollView_.scrollIndicatorInsets = newValue }
     }
     
     open var indicatorStyle: SKScrollNodeIndicatorStyle {
-        get { return scrollView.indicatorStyle }
-        set { scrollView.indicatorStyle = newValue }
+        get { return scrollView_.indicatorStyle }
+        set { scrollView_.indicatorStyle = newValue }
     }
     
     @available(iOS 3.0, *)
     open var decelerationRate: CGFloat {
-        get { return scrollView.decelerationRate }
-        set { scrollView.decelerationRate = newValue }
+        get { return scrollView_.decelerationRate }
+        set { scrollView_.decelerationRate = newValue }
     }
     
     open func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-        scrollView.setContentOffset(contentOffset, animated: animated)
+        scrollView_.setContentOffset(contentOffset, animated: animated)
     }
     
     open func scrollRectToVisible(_ rect: CGRect, animated: Bool) {
-        scrollView.scrollRectToVisible(rect, animated: animated)
+        scrollView_.scrollRectToVisible(rect, animated: animated)
     }
     
     open func flashScrollIndicators() {
-        scrollView.flashScrollIndicators()
+        scrollView_.flashScrollIndicators()
     }
     
     open var isTracking: Bool {
-        return scrollView.isTracking
+        return scrollView_.isTracking
     }
     
     open var isDragging: Bool {
-        return scrollView.isDragging
+        return scrollView_.isDragging
     }
     
     open var isDecelerating: Bool {
-        return scrollView.isDecelerating
+        return scrollView_.isDecelerating
     }
     
     open var delaysContentTouches: Bool {
-        get { return scrollView.delaysContentTouches }
-        set { scrollView.delaysContentTouches = newValue }
+        get { return scrollView_.delaysContentTouches }
+        set { scrollView_.delaysContentTouches = newValue }
     }
     
     open var canCancelContentTouches: Bool {
-        get { return scrollView.canCancelContentTouches }
-        set { scrollView.canCancelContentTouches = newValue }
+        get { return scrollView_.canCancelContentTouches }
+        set { scrollView_.canCancelContentTouches = newValue }
     }
     
     open var scrollsToTop: Bool {
-        get { return scrollView.scrollsToTop }
-        set { scrollView.scrollsToTop = newValue }
+        get { return scrollView_.scrollsToTop }
+        set { scrollView_.scrollsToTop = newValue }
     }
     
     @available(iOS 5.0, *)
     open var panGestureRecognizer: UIPanGestureRecognizer {
-        return scrollView.panGestureRecognizer
+        return scrollView_.panGestureRecognizer
     }
     
     @available(iOS 5.0, *)
     open var pinchGestureRecognizer: UIPinchGestureRecognizer? {
-        return scrollView.pinchGestureRecognizer
+        return scrollView_.pinchGestureRecognizer
     }
     
     open var directionalPressGestureRecognizer: UIGestureRecognizer {
-        return scrollView.directionalPressGestureRecognizer
+        return scrollView_.directionalPressGestureRecognizer
     }
     
     @available(iOS 7.0, *)
     open var keyboardDismissMode: SKScrollNodeKeyboardDismissMode {
-        get { return scrollView.keyboardDismissMode }
-        set { scrollView.keyboardDismissMode = newValue }
+        get { return scrollView_.keyboardDismissMode }
+        set { scrollView_.keyboardDismissMode = newValue }
     }
     
     internal func _proxyScrollViewDidScroll(_ scrollView: UIScrollView) {

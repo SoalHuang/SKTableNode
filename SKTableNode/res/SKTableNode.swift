@@ -44,11 +44,11 @@ open class SKTableNode: SKScrollNode {
         alwaysBounceVertical = true
         alwaysBounceHorizontal = false
         showsVerticalScrollIndicator = true
-        scrollView.showsHorizontalScrollIndicator = false
+        scrollView_.showsHorizontalScrollIndicator = false
     }
     
     open override var showsHorizontalScrollIndicator: Bool {
-        get { return scrollView.showsHorizontalScrollIndicator }
+        get { return scrollView_.showsHorizontalScrollIndicator }
         set { /* do nothing */ }
     }
     
@@ -68,7 +68,7 @@ open class SKTableNode: SKScrollNode {
             posY += ch
         }
         contentSize = CGSize(width: size.width, height: posY)
-        update(render: scrollView._internal_visiableRect)
+        update(render: scrollView_._internal_visiableRect)
     }
     
     private func update(render rect: CGRect) {
@@ -136,7 +136,7 @@ open class SKTableNode: SKScrollNode {
         case .bottom:   offsetY = cb.upper
         default: break
         }
-        scrollView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: animated)
+        scrollView_.setContentOffset(CGPoint(x: 0, y: offsetY), animated: animated)
     }
     
     open var indexsForSelectedRows: [Int] {
